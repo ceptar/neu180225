@@ -15,7 +15,12 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "~/generated/*": ["./app/generated/*"],
+      "~/utils/*": ["./app/utils/*"],
+      "~/providers/*": ["./app/providers/*"],
+      "~/graphqlWrapper": ["./app/graphqlWrapper.ts"],
+      "~/sessions": ["./app/sessions.ts"]
     },
     // Vite takes care of building everything, not tsc.
     "noEmit": true

@@ -14,6 +14,8 @@ import {
     ScrollRestoration,
     useLoaderData,
 } from '@remix-run/react';
+import { getCollections } from './providers/collections/collections';
+import { useActiveOrder } from './utils/use-active-order';
 import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import { Cart } from '~/src/components/cart/cart';
 import { Footer } from '~/src/components/footer/footer';
@@ -21,25 +23,46 @@ import { Header } from '~/src/components/header/header';
 import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 import { Toaster } from '~/src/components/toaster/toaster';
 import { CartOpenContextProvider } from '~/src/wix/cart';
-import { EcomApiContextProvider, getWixClientId, setWixClientId } from '~/src/wix/ecom';
+import { EcomApiContextProvider, getWixClientId, initializeEcomApiWithTokens, setWixClientId } from '~/src/wix/ecom';
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
 
 import styles from './root.module.scss';
 
+export type RootLoaderData = {
+    collections: Awaited<ReturnType<typeof getCollections>>;
+  };
+
 export async function loader({ request }: LoaderFunctionArgs) {
+    const collections = await getCollections(request, { take: 20 });
+    const colCollections = collections.filter(
+        (collection) => collection.parent?.slug === 'collections',
+      );
+    const colCategories = collections.filter(
+        (collection) => collection.parent?.slug === 'categories',
+      );
+      const colSpecials = collections.filter(
+        (collection) => collection.parent?.slug === 'specials',
+      );
     const { wixSessionTokens, session, shouldUpdateSessionCookie } =
-        await initializeEcomSession(request);
+  
+    await initializeEcomSession(request);
+
+    const loaderData: RootLoaderData = {
+        collections,
+    };
 
     const data = {
         wixClientId: getWixClientId(),
-        wixSessionTokens,
-    };
+        wixSessionTokens
+    }
 
     const headers: HeadersInit = shouldUpdateSessionCookie
         ? { 'Set-Cookie': await commitSession(session) }
         : {};
 
-    return json(data, { headers });
+    return json({
+        data,
+        ...loaderData}, { headers });
 }
 
 const breadcrumbs: RouteBreadcrumbs = () => [{ title: 'Home', to: '/' }];
@@ -67,18 +90,37 @@ export function Layout({ children }: React.PropsWithChildren) {
 }
 
 export default function App() {
-    const { wixClientId, wixSessionTokens } = useLoaderData<typeof loader>();
-
+    const loaderData = useLoaderData<RootLoaderData>().collections;
+    const { wixClientId, wixSessionTokens } = useLoaderData<typeof loader>().data;
     setWixClientId(wixClientId);
+
+console.log('collections', loaderData)
+
+const {
+    activeOrderFetcher,
+    activeOrder,
+    adjustOrderLine,
+    removeItem,
+    refresh,
+  } = useActiveOrder();
 
     return (
         <EcomApiContextProvider tokens={wixSessionTokens}>
             <CartOpenContextProvider>
                 <div>
                     <div className={styles.root}>
-                        <Header />
+                        <Header
+                        
+                         />
                         <main className={styles.main}>
-                            <Outlet />
+                            <Outlet 
+                                        context={{
+                                            activeOrderFetcher,
+                                            activeOrder,
+                                            adjustOrderLine,
+                                            removeItem,
+                                          }}
+                                          />
                         </main>
                         <Footer />
                     </div>

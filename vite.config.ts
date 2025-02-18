@@ -2,6 +2,8 @@ import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { netlifyPlugin } from '@netlify/remix-adapter/plugin';
+import tailwindcss from '@tailwindcss/vite'
+import App from './app/root';
 
 export default defineConfig({
     plugins: [
@@ -17,12 +19,19 @@ export default defineConfig({
         }),
         netlifyPlugin(),
         tsconfigPaths(),
+        tailwindcss(),
     ],
     resolve: {
-        alias: { '~': __dirname },
+        alias: { 
+            '~': __dirname,
+            '~/utils': 'app/utils',
+            '~/providers': 'app/providers',
+            '~/graphqlWrapper': 'app/graphqlWrapper',
+            '~/sessions':'app/sessions.ts',
+        },
     },
     optimizeDeps: {
-        include: ['@radix-ui/react-select', '@radix-ui/react-slider'],
+        include: ['@radix-ui/react-select', '@radix-ui/react-slider', '@remix-run/node'],
     },
     css: { preprocessorOptions: { scss: { api: 'modern' } } },
     build: {
