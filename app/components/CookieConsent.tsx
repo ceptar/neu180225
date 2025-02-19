@@ -57,9 +57,9 @@ export function CookieConsent({
 				hide && "hidden",
 			)}
 		>
-			<div className="m-3 border border-border bg-discogray shadow-lg text-white">
+			<div className="m-3 border bg-discogray shadow-lg text-white">
 				<div className="grid gap-2">
-					<div className="flex h-14 items-center justify-between border-b border-border p-4">
+					<div className="flex h-14 items-center justify-between border-b p-4">
 						<h1 className="text-lg font-medium">We use cookies</h1>
 						<CookieIcon className="h-[1.2rem] w-[1.2rem]" />
 					</div>
@@ -80,7 +80,7 @@ export function CookieConsent({
 							</a>
 						</p>
 					</div>
-					<div className="flex gap-2 border-t border-border p-4 py-5 dark:bg-background/20">
+					<div className="flex gap-2 border-t  p-4 py-5 dark:bg-background/20">
 						<Button onClick={accept} className="w-full">
 							Accept
 						</Button>
@@ -101,7 +101,7 @@ export function CookieConsent({
 				hide && "hidden",
 			)}
 		>
-			<div className="m-3 border border-border bg-background dark:bg-card">
+			<div className="m-3 border bg-background dark:bg-card">
 				<div className="flex items-center justify-between p-3">
 					<h1 className="text-lg font-medium">We use cookies</h1>
 					<CookieIcon className="h-[1.2rem] w-[1.2rem]" />

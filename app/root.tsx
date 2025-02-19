@@ -25,7 +25,7 @@ import { Toaster } from '~/src/components/toaster/toaster';
 import { CartOpenContextProvider } from '~/src/wix/cart';
 import { EcomApiContextProvider, getWixClientId, initializeEcomApiWithTokens, setWixClientId } from '~/src/wix/ecom';
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
-
+import '~/src/styles/tailwind.css';
 import styles from './root.module.scss';
 import { collections } from '@wix/stores';
 

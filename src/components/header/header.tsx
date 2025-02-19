@@ -4,32 +4,21 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { CartIcon, DiscoLogo } from '~/src/components/icons';
-import { getCartItemCount, useCartData, useCartOpen } from '~/src/wix/cart';
 import MobileMenu from '~/app/components/header/sheetMenu/MobileMenu';
-// import { NavigationMenu } from '../navigation-menu/navigation-menu';
-// import { SearchInput } from '../search-input/search-input';
-// import { SidebarNavigationMenu } from '../sidebar-navigation-menu/sidebar-navigation-menu';
-// import { motion, useScroll, useTransform } from "framer-motion";
-// import { UserMenu } from '../user-menu/user-menu';
-
+import { Weight } from "lucide-react";
+import CartTray from '~/app/components/cart/CartTray';
 
 import styles from './header.module.scss';
 export interface HeaderProps {
     className?: string;
     collections: Array<any>;
+    onCartIconClick: () => void;
+    cartQuantity: number;
 }
 
-export const Header = ({ className, collections }: HeaderProps) => {
-    // const cartOpener = useCartOpen();
+export const Header = ({ className, collections,onCartIconClick, cartQuantity, }: HeaderProps) => {
     const navigate = useNavigate();
     console.log('collectionsHeader', collections);
-    const onSearchSubmit = (search: string) => {
-        navigate(`/products/all-products?search=${encodeURIComponent(search)}`);
-    };
-
-    // const cartItemCount = cart.data ? getCartItemCount(cart.data) : 0;
-
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const [rootRouteOpacity, setRootRouteOpacity] = React.useState(1);
     const [headerOpacity, setHeaderOpacity] = React.useState(0);
@@ -71,8 +60,33 @@ export const Header = ({ className, collections }: HeaderProps) => {
             >
                 <div className="navbarFrame">
                     <section className={styles.topBar}>
-                        <div className="w-full flex justify-evenly">
-                            <div className="flex flex-1">
+                        {/* <div className="w-full flex justify-evenly"> */}
+
+                            <div className="relative flex flex-row items-center justify-between h-full w-full ">
+
+        <div className="relative flex flex-col items-center justify-center w-20 p-4">
+          <button
+            className="flex flex-col  bg-opacity-90 shadow-none cursor-pointer justify-center rounded-full items-center py-2 text-sm text-discogray transition-all duration-300 ease-out hover:opacity-70"
+            onClick={onCartIconClick}
+            aria-label="Open cart tray"
+          >
+            <Weight
+              className="z-40"
+              fill={`rgba(${255 * (1 - headerOpacity - rootRouteOpacity)}, ${
+                255 * (1 - headerOpacity - rootRouteOpacity)
+              }, ${255 * (1 - headerOpacity - rootRouteOpacity)})`}
+            />
+            {cartQuantity ? (
+              <div className="top-[40px] left-[14px] w-5 h-5 z-40 absolute items-center font-bold justify-center rounded-full text-sm bg-discoyellow-200 text-discogray">
+                {cartQuantity}
+              </div>
+            ) : (
+              ''
+            )}
+          </button>
+        </div>
+
+
                                 {/* <button
                         className={classNames(styles.cartButton, 'iconButton')}
                         onClick={() => cartOpener.setIsOpen(true)}
@@ -83,42 +97,24 @@ export const Header = ({ className, collections }: HeaderProps) => {
                         rootRouteOpacity={rootRouteOpacity}
                         />
                     </button> */}
-                            </div>
+                   
                             <Link to="/" className={styles.logo}>
                                 <DiscoLogo />
                             </Link>
-                            {/* <div>
-                    <div className={styles.advertisingText}>
-                        Free shipping on all intl. orders over $35
-                    </div>
-                    <Link className={styles.shopNow} to="/products/all-products">
-                        Shop Now
-                    </Link>
-                </div> */}
+
                             <div className="flex justify-end items-center flex-1">
                              <MobileMenu
                         collections={collections}
                         headerOpacity={headerOpacity} 
                         rootRouteOpacity={rootRouteOpacity}
-/>
+/>    </div>
+                           
                             </div>
-                        </div>
                     </section>
-                    {/* <section className={styles.navigation}>
-                <SearchInput className={styles.searchInput} onSearchSubmit={onSearchSubmit} />
-                <NavigationMenu className={styles.menu} />
-                <div className={styles.actions}>
-                    <UserMenu />
-
-
-
-
+ 
                 </div>
-            </section> */}
-
-                    {/* <SidebarNavigationMenu open={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} /> */}
+        
                 </div>
-            </div>
         </header>
     );
 };

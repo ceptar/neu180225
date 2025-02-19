@@ -20,7 +20,6 @@ export default defineConfig({
         }),
         netlifyPlugin(),
         tsconfigPaths(),
-        tailwindcss(),
     ],
     resolve: {
         alias: { 
