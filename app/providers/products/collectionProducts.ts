@@ -1,5 +1,5 @@
 import { sdk } from '~/app/graphqlWrapper';
-import { getProductBySlug } from '~/providers/products/products';
+import { getProductBySlug } from '~/app/providers/products/products';
 
 export async function getCollectionProducts(slug: string, skip: number = 0, take: number = 10) {
   const collectionProducts = await sdk.GetCollectionProducts({ slug, skip, take });

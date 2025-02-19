@@ -7,6 +7,7 @@ import { getProductImageUrl, useProducts } from '~/src/wix/products';
 import styles from './featured-products-section.module.scss';
 
 interface FeaturedProductsSectionProps {
+    featuredProducts?: any[];
     categorySlug: string;
     title?: string;
     description?: JSX.Element | string;
@@ -15,28 +16,34 @@ interface FeaturedProductsSectionProps {
 }
 
 export const FeaturedProductsSection = (props: FeaturedProductsSectionProps) => {
-    const { title, description, productCount = 4, categorySlug, className } = props;
-    const { data: category } = useCategoryDetails(categorySlug);
-    const { data: products } = useProducts({ categorySlug, limit: productCount });
+    const {
+        featuredProducts,
+        title,
+        description,
+        productCount = 4,
+        categorySlug,
+        className,
+    } = props;
+    // const { data: category } = useCategoryDetails(categorySlug);
+    // const { data: products } = useProducts({ categorySlug, limit: productCount });
 
     return (
         <div className={classNames(styles.root, className)}>
             <FadeIn className={styles.header} duration={1.8}>
-                <h3 className={styles.headerTitle}>{title ?? category?.name ?? categorySlug}</h3>
-                <div className={styles.headerDescription}>
-                    {description ?? category?.description}
-                </div>
+                <h3 className={styles.headerTitle}>{title}</h3>
+                <div className={styles.headerDescription}>{description}</div>
             </FadeIn>
             <Reveal className={styles.products} direction="down" duration={1.4}>
-                {products
-                    ? products.items.map((product) => (
-                          <ProductLink key={product._id} productSlug={product.slug!}>
+                {featuredProducts
+                    ? featuredProducts.map((product) => (
+                          <ProductLink key={product.productId} productSlug={product.slug!}>
                               <ProductCard
-                                  name={product.name!}
-                                  imageUrl={getProductImageUrl(product, { minHeight: 700 })}
-                                  price={product.priceData?.formatted?.price}
-                                  discountedPrice={product.priceData?.formatted?.discountedPrice}
-                                  ribbon={product.ribbon ?? undefined}
+                                  name={product.productName!}
+                                  imageUrl={product.productAsset?.preview}
+                                  price={product.priceWithTax}
+                                  currencyCode={product.currencyCode}
+                                  //   discountedPrice={product.priceData?.formatted?.discountedPrice}
+                                  //   ribbon={product.ribbon ?? undefined}
                               />
                           </ProductLink>
                       ))

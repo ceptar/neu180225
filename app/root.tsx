@@ -27,6 +27,7 @@ import { EcomApiContextProvider, getWixClientId, initializeEcomApiWithTokens, se
 import { commitSession, initializeEcomSession } from '~/src/wix/ecom/session';
 
 import styles from './root.module.scss';
+import { collections } from '@wix/stores';
 
 export type RootLoaderData = {
     collections: Awaited<ReturnType<typeof getCollections>>;
@@ -94,7 +95,7 @@ export default function App() {
     const { wixClientId, wixSessionTokens } = useLoaderData<typeof loader>().data;
     setWixClientId(wixClientId);
 
-console.log('collections', loaderData)
+console.log('collections', collections)
 
 const {
     activeOrderFetcher,
@@ -110,7 +111,7 @@ const {
                 <div>
                     <div className={styles.root}>
                         <Header
-                        
+                        collections={loaderData}
                          />
                         <main className={styles.main}>
                             <Outlet 

@@ -1,21 +1,58 @@
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { useLoaderData , useRouteLoaderData} from '@remix-run/react';
+import { getCollectionProducts } from '~/app/providers/products/collectionProducts';
 import type { MetaFunction } from '@remix-run/react';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { FeaturedProductsSection } from '~/src/components/featured-products-section/featured-products-section';
 import { LabelWithArrow } from '~/src/components/label-with-arrow/label-with-arrow';
 import { BackgroundParallax, FadeIn, FloatIn } from '~/src/components/visual-effects';
 
+export async function loader({ request }: LoaderFunctionArgs) {
+        const collectionProducts = await getCollectionProducts(
+            "sc2-featured-items",
+            0,
+            100,
+         );
+        const collectionProductsZwo = await getCollectionProducts(
+            "sc1-new-in",
+            0,
+            100,
+        );
+        console.log('featuredProducts', collectionProducts)
+
+            return { collectionProducts, collectionProductsZwo };
+    };
+
 export default function HomePage() {
+    const rootLoaderData =
+    useRouteLoaderData<typeof rootLoader>("root")
+    const colHomeEins = rootLoaderData.collections?.find(
+        (collection: { slug: string; }) => collection.slug === 'sc1-new-in',
+    );
+    const colHomeZwei = rootLoaderData.collections?.find(
+        (collection: { slug: string; }) => collection.slug === 'ca-beach',
+    );
+    const colHomeDrei = rootLoaderData.collections?.find(
+        (collection: { slug: string; }) => collection.slug === 'ca-hot-pink-ocean-berry',
+    );
+    const { collectionProducts } = useLoaderData<typeof loader>();
+    const featuredProducts = collectionProducts?.search?.items;
+    const { collectionProductsZwo } = useLoaderData<typeof loader>();
+    const featuredProductsZwo = collectionProductsZwo?.search?.items;
+
     return (
         <div>
+            <div className="heroBannerImageFrame">
+            <img src="./fthdrg.webp" className="heroBannerImage" alt="" />
+            </div>
             <div className="heroBanner">
-                <img
-                    src="https://static.wixstatic.com/media/32aab9_2c3c65e142434906992aedb17db53566~mv2.jpg"
-                    className="heroBannerImage"
-                    alt=""
-                />
                 <div className="heroBannerOverlay">
-                    <div className="heroBannerSubtitle">ReClaim</div>
-                    <h1 className="heroBannerTitle">Reuse. Repurpose. Relove.</h1>
+                    <h1 className="heroBannerTitle">Life's</h1>
+                    <div className="heroBannerSubtitle">too</div>
+                    <h1 className="heroBannerTitle">short</h1>
+                    <div className="heroBannerSubtitle">to wear boring</div>
+                    <h1 className="heroBannerTitle">jewelry</h1>
+
                     <CategoryLink categorySlug="all-products">
                         <LabelWithArrow>Shop Collections</LabelWithArrow>
                     </CategoryLink>
@@ -28,51 +65,52 @@ export default function HomePage() {
                     <div className="textBannerTitle">
                         Essential home collections for sustainable living
                     </div>
-                    <CategoryLink categorySlug="all-products">
+                    <CategoryLink categorySlug="aa-all-products">
                         <LabelWithArrow>Shop Collections</LabelWithArrow>
                     </CategoryLink>
                 </FadeIn>
             </div>
 
             <div className="cardsSection">
-                <CategoryLink categorySlug="kitchen-essentials" className="linkCard">
+                <CategoryLink categorySlug={colHomeEins?.slug} className="linkCard">
                     <img
                         className="linkCardBackground"
-                        src="https://static.wixstatic.com/media/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg/v1/fill/w_547,h_730,q_90/c837a6_c05a03f48fbd49e7b5046d1b18c930eb~mv2.jpg"
+                        src={colHomeEins?.featuredAsset?.preview}
                         alt=""
                     />
-                    <div className="linkCardTitle">Kitchen</div>
+                    <div className="linkCardTitle">{colHomeEins?.name}</div>
                 </CategoryLink>
-                <CategoryLink categorySlug="bath" className="linkCard">
+                <CategoryLink categorySlug={colHomeZwei?.slug} className="linkCard">
                     <img
                         className="linkCardBackground"
-                        src="https://static.wixstatic.com/media/c837a6_269f35d6ccff4321b7ed1e65c2835c61~mv2.jpg/v1/fill/w_548,h_730,q_90/c837a6_269f35d6ccff4321b7ed1e65c2835c61~mv2.jpg"
+                        src={colHomeZwei?.featuredAsset?.preview}
                         alt=""
                     />
-                    <div className="linkCardTitle">Bath</div>
+                    <div className="linkCardTitle">{colHomeZwei?.name}</div>
                 </CategoryLink>
-                <CategoryLink categorySlug="on-the-go" className="linkCard">
+                <CategoryLink categorySlug={colHomeDrei?.slug} className="linkCard">
                     <img
                         className="linkCardBackground"
-                        src="https://static.wixstatic.com/media/c837a6_d38d8d08196d477ba49efff880d5b918~mv2.jpg/v1/fill/w_547,h_730,q_90/c837a6_d38d8d08196d477ba49efff880d5b918~mv2.jpg"
+                        src={colHomeDrei?.featuredAsset?.preview}
                         alt=""
                     />
-                    <div className="linkCardTitle">On the Go</div>
+                    <div className="linkCardTitle">{colHomeDrei?.name}</div>
                 </CategoryLink>
             </div>
 
             <FeaturedProductsSection
+                featuredProducts={featuredProducts}
                 className="alternateBackground"
-                categorySlug="new-in"
-                title="New In"
-                description="Embrace a sustainable lifestyle with our newest drop-ins."
+                categorySlug="sc2-featured-items"
+                title="Featured Items"
+                description="Shine bright like a diamond."
                 productCount={4}
             />
 
             <BackgroundParallax
                 className="floatingCardBackground"
-                backgroundImageUrl="https://static.wixstatic.com/media/c837a6_cae4dbe5a7ee4637b7d55d9bd5bd755d~mv2.png/v1/fill/w_1178,h_974,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/c837a6_cae4dbe5a7ee4637b7d55d9bd5bd755d~mv2.png"
-                parallaxStrength={0.75}
+                backgroundImageUrl="./heropara.webp"
+                parallaxStrength={1}
             >
                 <FloatIn direction="up" duration={1.2} distance={120}>
                     <div className="floatingCard">
@@ -92,9 +130,10 @@ export default function HomePage() {
             </BackgroundParallax>
 
             <FeaturedProductsSection
-                categorySlug="best-sellers"
-                title="Best Sellers"
-                description="When quality is eco-friendly. Explore our top picks."
+                featuredProducts={featuredProductsZwo}
+                categorySlug="sc1-new-in"
+                title="New In"
+                description="Are You an explorer?"
                 productCount={4}
             />
         </div>

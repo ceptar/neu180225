@@ -3,6 +3,25 @@
 @tailwind utilities;
 @layer base {
   :root {
+
+    --page-background-color: #faf9f6;
+    --text-color: #17110d;
+    --error-color: #df3131;
+    /** Focus ring that appears when an element is focused via keyboard. */
+    --focus-ring-color: #414434;
+
+    --primary1: #faf9f6;
+    --primary2: #ffd2e4;
+    --primary3: #faf9f6;
+    --primary4: #767165;
+    --primary5: #17110d;
+
+    --secondary1: #ced0c4;
+    --secondary2: #9fa295;
+    --secondary3: #707365;
+    --secondary4: #414434;
+    --secondary5: #22241b;
+
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -30,6 +49,25 @@
     --radius: 0.5rem
   }
   .dark {
+
+    --page-background-color: #faf9f6;
+    --text-color: #17110d;
+    --error-color: #df3131;
+    /** Focus ring that appears when an element is focused via keyboard. */
+    --focus-ring-color: #414434;
+
+    --primary1: #faf9f6;
+    --primary2: #ffd2e4;
+    --primary3: #faf9f6;
+    --primary4: #767165;
+    --primary5: #17110d;
+
+    --secondary1: #ced0c4;
+    --secondary2: #9fa295;
+    --secondary3: #707365;
+    --secondary4: #414434;
+    --secondary5: #22241b;
+
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -64,3 +102,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 
+page-background-color: '(var(--page-background-color))'
+text-color: '(var(--text-color))'
+error-color: '(var(--error-color))'
+focus-ring-color: '(var(--focus-ring-color))'
+
+primary1: '(var(--primary1))'
+primary2: '(var(--primary2))'
+primary3: '(var(--primary3))'
+primary4: '(var(--primary4))'
+primary5: '(var(--primary5))'
+
+secondary1: '(var(--secondary1))'
+secondary2: '(var(--secondary2))'
+secondary3: '(var(--secondary3))'
+secondary4: '(var(--secondary4))'
+secondary5: '(var(--secondary5))'
+
+  background: 'hsl(var(--background))'
+  foreground: 'hsl(var(--foreground))' */

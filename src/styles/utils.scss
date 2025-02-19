@@ -201,25 +201,36 @@
     height: 100vh;
     position: relative;
     color: var(--primary1);
-    background: #000;
 }
 
 .heroBannerOverlay {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     flex-direction: column;
-    text-align: center;
+    text-align: left;
     overflow: hidden;
     position: absolute;
     inset: 0;
     padding: 40px;
 }
 
+.heroBannerImageFrame {
+    display:flex;
+    top: 0;
+    margin-inline: calc(-1 * var(--pagePaddingHoriz));
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    margin-top: 0;
+    background: #000;
+
+}
+
 .heroBannerImage {
     opacity: 0.8;
     object-fit: cover;
-    object-position: 50% 50%;
+    object-position: 80% 50%;
     height: 100%;
     width: 100%;
 }
@@ -232,7 +243,7 @@
 
 .heroBannerTitle {
     font: var(--heading1);
-    font-size: 6vw;
+    font-size: calc(36px + 1.8vw + 1.8vh);
     text-transform: uppercase;
 }
 

@@ -1,4 +1,4 @@
-import { search, searchFacetValues } from '~/providers/products/products';
+import { search, searchFacetValues } from '~/app/providers/products/products';
 import { redirect } from '@remix-run/server-runtime';
 
 import { paginationValidationSchema } from '~/utils/pagination';

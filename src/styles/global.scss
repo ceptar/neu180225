@@ -5,7 +5,9 @@
 :root {
     font: var(--paragraph1);
     color: var(--text-color);
-    --pagePaddingHoriz: max(2vw, 15px);
+    --pagePaddingHoriz: max(16px);
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 body {
@@ -20,3 +22,19 @@ body {
         0 0 0 1px #ffffff,
         0 0 0 3px var(--focus-ring-color);
 }
+
+// ::-webkit-scrollbar {
+//     height: 12px;
+//     width: 5px;
+//     background: var(--background);
+//   }
+  
+//   ::-webkit-scrollbar-thumb {
+//     background: var(--grey);
+//     border-radius: 1ex;
+//     -webkit-border-radius: 1ex;
+//   }
+  
+//   ::-webkit-scrollbar-corner {
+//     background: var(--background);
+//   }
