@@ -123,43 +123,44 @@ export default function ProductDetailsPage() {
                             />
                         </div>
                         <activeOrderFetcher.Form method="post" action="/api/active-order">
-                            <input type="hidden" name="action" value="addItemToOrder" />
-                            {1 < product.variants.length ? (
-                                <div className="mt-4">
-                                    <label
-                                        htmlFor="option"
-                                        className="block text-sm tracking-tight text-discopink-300"
-                                    >
-                                        Select option
-                                    </label>
-                                    <select
-                                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-discogray focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                                        id="productVariant"
-                                        value={selectedVariantId}
-                                        name="variantId"
-                                        onChange={(e) => {
-                                            setSelectedVariantId(e.target.value);
+                <input type="hidden" name="action" value="addItemToOrder" />
+                {1 < product.variants.length ? (
+                  <div className="mt-4">
+                    <label
+                      htmlFor="option"
+                      className="block text-sm tracking-tight text-discopink-300"
+                    >
+                      Select option
+                    </label>
+                    <select
+                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-discogray focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      id="productVariant"
+                      value={selectedVariantId}
+                      name="variantId"
+                      onChange={(e) => {
+                        setSelectedVariantId(e.target.value);
 
-                                            const variant = findVariantById(e.target.value);
-                                            if (variant) {
-                                                setFeaturedAsset(variant!.featuredAsset);
-                                            }
-                                        }}
-                                    >
-                                        {product.variants.map((variant) => (
-                                            <option key={variant.id} value={variant.id}>
-                                                {variant.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            ) : (
-                                <input
-                                    type="hidden"
-                                    name="variantId"
-                                    value={selectedVariantId}
-                                ></input>
-                            )}
+                        const variant = findVariantById(e.target.value);
+                        if (variant) {
+                          setFeaturedAsset(variant!.featuredAsset);
+                        }
+                      }}
+                    >
+                      {product.variants.map((variant) => (
+                        <option key={variant.id} value={variant.id}>
+                          {variant.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <input
+                    type="hidden"
+                    name="variantId"
+                    value={selectedVariantId}
+                  ></input>
+                )}
+
                             {/* Product price */}
                             <div className="flex flex-col">
                                 <div className="uppercase text-lg py-2 ">

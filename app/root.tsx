@@ -23,7 +23,7 @@ import { getActiveCustomer } from './providers/customer/customer';
 // import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import CartTray from '~/app/components/cart/CartTray';
 import { Footer } from '~/src/components/footer/footer';
-import { Header } from '~/src/components/header/header';
+import { Header } from '~/app/components/header/header/header';
 // import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 // import { Toaster } from '~/src/components/toaster/toaster';
 
