@@ -1,7 +1,8 @@
 import { Button } from "../ui/button";
 import { Weight } from "lucide-react";
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Input } from "~/app/components/ui/input"
+import { Label } from "~/app/components/ui/label"
+import { useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -11,16 +12,16 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { Price } from '~/components/products/Price';
-import { CartLoaderData } from '~/routes/api/active-order';
-import { CurrencyCode } from '~/generated/graphql';
+} from "~/app/components/ui/sheet"
+import { Price } from '~/app/components/products/Price';
+import { CartLoaderData } from '~/app/routes/api.active-order/route';
+import { CurrencyCode } from '~/app/generated/graphql';
 import { Link, useLocation } from '@remix-run/react';
 import { CartContents } from './CartContents';
 
 export default function CartTray({
-    open,
-    onClose,
+  open,
+  onClose,
     activeOrder,
     adjustOrderLine,
     removeItem,
@@ -36,9 +37,8 @@ export default function CartTray({
     const editable = !location.pathname.startsWith('/checkout');
     
     return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={onClose}>
       <SheetTrigger asChild>
-        <Weight className="w-[26px] h-[26px] p-1 isolate z-[100]" />
       </SheetTrigger>
       <SheetContent className="left w-[100%] sm:w-[50%] xl:w-[30%]">
         <SheetHeader>
@@ -46,7 +46,7 @@ export default function CartTray({
           <SheetDescription>
           </SheetDescription>
         </SheetHeader>
-        <div className="overflow-y-auto px-4 py-8">
+        <div className="overflow-y-auto pt-5 px-4 py-8">
                       {activeOrder?.totalQuantity ? (
                         <CartContents
                           orderLines={activeOrder?.lines ?? []}

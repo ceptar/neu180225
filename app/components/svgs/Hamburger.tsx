@@ -11,7 +11,8 @@ const Hamburger = ({
     style={{ color: fill }}
     {...props}
   >
-<path d="M3 16.125V14.625H20.5V16.125H3ZM3 8.5V7H20.5V8.5H3Z" fill="currentColor"/>
+<path d="M3 16.125V14.625H20.5V16.125H3ZM3 8.5V7H20.5V8.5H3Z" 
+fill="currentColor"/>
 
   </svg>
 );

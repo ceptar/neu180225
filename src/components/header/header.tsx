@@ -7,6 +7,7 @@ import { CartIcon, DiscoLogo } from '~/src/components/icons';
 import MobileMenu from '~/app/components/header/sheetMenu/MobileMenu';
 import { Weight } from "lucide-react";
 import CartTray from '~/app/components/cart/CartTray';
+import Cart from '~/app/components/svgs/Cart';
 
 import styles from './header.module.scss';
 export interface HeaderProps {
@@ -17,6 +18,7 @@ export interface HeaderProps {
 }
 
 export const Header = ({ className, collections,onCartIconClick, cartQuantity, }: HeaderProps) => {
+
     const navigate = useNavigate();
     console.log('collectionsHeader', collections);
 
@@ -60,24 +62,25 @@ export const Header = ({ className, collections,onCartIconClick, cartQuantity, }
             >
                 <div className="navbarFrame">
                     <section className={styles.topBar}>
-                        {/* <div className="w-full flex justify-evenly"> */}
+
 
                             <div className="relative flex flex-row items-center justify-between h-full w-full ">
 
-        <div className="relative flex flex-col items-center justify-center w-20 p-4">
-          <button
-            className="flex flex-col  bg-opacity-90 shadow-none cursor-pointer justify-center rounded-full items-center py-2 text-sm text-discogray transition-all duration-300 ease-out hover:opacity-70"
+        <div className="flex-1 flex-col items-center justify-center">
+        <button
+            className="flex flex-col  bg-opacity-90 shadow-none cursor-pointer justify-center rounded-full items-center py-2 text-sm transition-all duration-300 ease-out hover:opacity-70"
             onClick={onCartIconClick}
             aria-label="Open cart tray"
           >
-            <Weight
-              className="z-40"
-              fill={`rgba(${255 * (1 - headerOpacity - rootRouteOpacity)}, ${
-                255 * (1 - headerOpacity - rootRouteOpacity)
-              }, ${255 * (1 - headerOpacity - rootRouteOpacity)})`}
+            <Cart
             />
             {cartQuantity ? (
-              <div className="top-[40px] left-[14px] w-5 h-5 z-40 absolute items-center font-bold justify-center rounded-full text-sm bg-discoyellow-200 text-discogray">
+              <div className="w-5 h-5 z-40 absolute items-center font-bold justify-center rounded-full text-sm"
+              style={{
+                backgroundColor: "#ffff0078",
+                left: "18px",
+                top: "20px",
+              }}>
                 {cartQuantity}
               </div>
             ) : (

@@ -1,209 +1,86 @@
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { type MetaFunction, useLoaderData } from '@remix-run/react';
-import type { GetStaticRoutes } from '@wixc3/define-remix-app';
-import classNames from 'classnames';
-import { useEffect } from 'react';
-import { AppliedProductFilters } from '~/src/components/applied-product-filters/applied-product-filters';
-import { Breadcrumbs } from '~/src/components/breadcrumbs/breadcrumbs';
-import { RouteBreadcrumbs, useBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
-import { CategoryLink } from '~/src/components/category-link/category-link';
-import { ProductFilters } from '~/src/components/product-filters/product-filters';
-import { ProductGrid } from '~/src/components/product-grid/product-grid';
-import { ProductSortingSelect } from '~/src/components/product-sorting-select/product-sorting-select';
-import { toast } from '~/src/components/toast/toast';
-import { initializeEcomApiAnonymous } from '~/src/wix/ecom';
-import { initializeEcomApiForRequest } from '~/src/wix/ecom/session';
-import {
-    productFiltersFromSearchParams,
-    productSortByFromSearchParams,
-    useAppliedProductFilters,
-    useProductSorting,
-    useProductsPageResults,
-} from '~/src/wix/products';
-import { getErrorMessage } from '~/src/wix/utils';
+import * as React from 'react';
+import { useLoaderData, useSubmit, Form } from '@remix-run/react';
+import { LoaderFunction } from '@remix-run/node';
+import { sdk } from '~/app/graphqlWrapper';
+import FacetFilterDrawer from '~/app/components/FacetFilters/FacetFilterDrawer';
+import FramerModal from '~/app/components/FramerModal/FramerModal';
+import { Link } from '@remix-run/react';
+import { Price } from '~/app/components/products/Price';
+import { CurrencyCode } from '~/app/generated/graphql';
 
-import styles from './route.module.scss';
+export const loader: LoaderFunction = async ({ params, request }) => {
+  console.log('collectionSlug', params.categorySlug)
+  const url = new URL(request.url);
+  const term = url.searchParams.get('term') || '';
+  const filterIds = url.searchParams.get('filterIds')?.split(',') || [];
+  const categorySlug = params.categorySlug
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-    const url = new URL(request.url);
-    const { categorySlug } = params;
-
-    if (!categorySlug) {
-        throw new Response('Bad Request', { status: 400 });
-    }
-
-    const api = await initializeEcomApiForRequest(request);
-    const filters = productFiltersFromSearchParams(url.searchParams);
-    const sortBy = productSortByFromSearchParams(url.searchParams);
-    const category = await api.getCategoryBySlug(categorySlug);
-
-    if (!category) {
-        throw new Response('Category Not Found', { status: 404 });
-    }
-
-    const [categoryProducts, allCategories, productPriceBounds] = await Promise.all([
-        api.getProducts({ categoryId: category._id!, filters, sortBy }),
-        api.getAllCategories(),
-        api.getProductPriceBoundsInCategory(category._id!),
-    ]);
-
-    return { category, categoryProducts, allCategories, productPriceBounds };
-};
-
-const breadcrumbs: RouteBreadcrumbs<typeof loader> = (match) => [
-    {
-        title: match.data.category.name!,
-        to: `/products/${match.data.category.slug}`,
+  const { collection } = await sdk.collection({ slug: categorySlug });
+  const { search } = await sdk.search({
+    input: {
+      term,
+      collectionSlug: params.categorySlug,
+      groupByProduct: true,
+      facetValueFilters: filterIds.map(id => ({ and: id })),
     },
-];
+  });
 
-export const getStaticRoutes: GetStaticRoutes = async () => {
-    const api = initializeEcomApiAnonymous();
-    const categories = await api.getAllCategories();
-    return categories.map((category) => `/products/${category.slug}`);
-};
-
-export const handle = {
-    breadcrumbs,
+  return { collection, search, term, filterIds };
 };
 
 export default function ProductsPage() {
-    const {
-        category,
-        categoryProducts: resultsFromLoader,
-        allCategories,
-        productPriceBounds,
-    } = useLoaderData<typeof loader>();
+  const { collection, search, term, filterIds } = useLoaderData<typeof loader>();
+  const submit = useSubmit();
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
-    const { appliedFilters, someFiltersApplied, clearFilters, clearAllFilters } =
-        useAppliedProductFilters();
+  const handleFilterChange = (newFilterIds: string[]) => {
+    submit({ filterIds: newFilterIds.join(','), term }, { method: 'get' });
+  };
 
-    const { sorting } = useProductSorting();
+  return (
+    <div className="w-full mt-[112px]">
+          <div className="">      
 
-    const { products, totalProducts, loadMoreProducts, isLoadingMoreProducts, error } =
-        useProductsPageResults({
-            categoryId: category._id!,
-            filters: appliedFilters,
-            sorting,
-            resultsFromLoader,
-        });
+<FacetFilterDrawer
+      results={search.facetValues}
+      filterIds={filterIds}
+      updateFilterIds={handleFilterChange}
+    />
+    </div>
+     
 
-    const currency = products[0]?.priceData?.currency ?? 'USD';
+    <div className="py-8 relative h-[5rem] z-20 flex justify-start items-center mr-auto ml-auto w-full">
+    <h2 id="category-heading" className="items-center justify-start flex leading-10">
+      <span className="text-[calc(1.5vw+2.5vh)]">
+        {collection.name}
+      </span>
+    </h2>
+  </div>
 
-    const breadcrumbs = useBreadcrumbs();
 
-    useEffect(() => {
-        if (error) toast.error(getErrorMessage(error));
-    }, [error]);
-
-    return (
-        <div className={styles.page}>
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-
-            <div className={styles.content}>
-                <div className={styles.sidebar}>
-                    <nav>
-                        <h2 className={styles.sidebarTitle}>Browse by</h2>
-                        <ul className={styles.categoryList}>
-                            {allCategories.map((category) => (
-                                <li key={category._id} className={styles.categoryListItem}>
-                                    <CategoryLink
-                                        categorySlug={category.slug!}
-                                        className={({ isActive }) =>
-                                            classNames(styles.categoryLink, {
-                                                [styles.categoryLinkActive]: isActive,
-                                            })
-                                        }
-                                    >
-                                        {category.name}
-                                    </CategoryLink>
-                                </li>
-                            ))}
-                        </ul>
-
-                        {category.numberOfProducts !== 0 && (
-                            <div className={styles.filters}>
-                                <h2
-                                    className={classNames(styles.sidebarTitle, styles.filtersTitle)}
-                                >
-                                    Filters
-                                </h2>
-                                <ProductFilters
-                                    minAvailablePrice={productPriceBounds.lowest}
-                                    maxAvailablePrice={productPriceBounds.highest}
-                                    currency={currency}
-                                />
-                            </div>
-                        )}
-                    </nav>
+  <div className="relative h-full my-4 py-4"> 
+<div className="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">        
+  {search.items.map(({ productName, slug, priceWithTax, currencyCode, productAsset }) => (
+          <div className="break-inside-avoid object-cover w-full mb-4" key={slug}>
+            <Link to={`/product-details/${slug}`} prefetch="intent">
+              <img
+                className="object-cover aspect-[5/8]"
+                alt={productName}
+                src={productAsset?.preview + '?w=full'}
+              ></img>
+                     <div className="relative w-full mx-auto bottom-0 left-0">
+                     <div className="text-center bg-neutral-800 absolute bottom-0 left-0 w-fit h-fit text-white p-1 ">                
+                      <Price priceWithTax={priceWithTax} currencyCode={currencyCode as CurrencyCode} />               
                 </div>
-
-                <div className={styles.main}>
-                    <div className={styles.categoryHeader}>
-                        <h1 className={styles.categoryName}>
-                            {appliedFilters.search ? `"${appliedFilters.search}"` : category.name}
-                        </h1>
-                        {category.description && !appliedFilters.search && (
-                            <p className={styles.categoryDescription}>{category.description}</p>
-                        )}
-                    </div>
-
-                    {someFiltersApplied && (
-                        <AppliedProductFilters
-                            className={styles.appliedFilters}
-                            appliedFilters={appliedFilters}
-                            onClearFilters={clearFilters}
-                            onClearAllFilters={clearAllFilters}
-                            currency={currency}
-                            minPriceInCategory={productPriceBounds.lowest}
-                            maxPriceInCategory={productPriceBounds.highest}
-                        />
-                    )}
-
-                    <div className={styles.countAndSorting}>
-                        <p className={styles.productsCount}>
-                            {totalProducts} {totalProducts === 1 ? 'product' : 'products'}
-                        </p>
-
-                        <ProductSortingSelect />
-                    </div>
-
-                    <ProductGrid
-                        products={products}
-                        category={category}
-                        filtersApplied={someFiltersApplied}
-                        onClickClearFilters={clearAllFilters}
-                    />
-
-                    {products.length < totalProducts && (
-                        <div className={styles.loadMoreWrapper}>
-                            <button
-                                className="button secondaryButton"
-                                onClick={loadMoreProducts}
-                                disabled={isLoadingMoreProducts}
-                            >
-                                {isLoadingMoreProducts ? 'Loading...' : 'Load More'}
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+              </div>
+              <div className="py-2 pl-1 whitespace-nowrap overflow-hidden">
+                {productName}
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
+    </div>
+  );
 }
-
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-    return [
-        { title: `${data?.category.name ?? 'ReClaim: Products'} | ReClaim` },
-        {
-            name: 'description',
-            content: data?.category.description,
-        },
-        {
-            property: 'robots',
-            content: 'index, follow',
-        },
-    ];
-};
-
-export { ErrorBoundary } from '~/src/components/error-page/error-page';

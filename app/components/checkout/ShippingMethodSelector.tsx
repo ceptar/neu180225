@@ -1,11 +1,11 @@
 import { RadioGroup } from '@headlessui/react';
-import { classNames } from '~/utils/class-names';
+import { classNames } from '~/app/utils/class-names';
 import { Price } from '~/app/components/products/Price';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CircleCheck as CheckCircleIcon } from 'lucide-react';
 import {
   CurrencyCode,
   EligibleShippingMethodsQuery,
-} from '~/generated/graphql';
+} from '~/appgenerated/graphql';
 // import { useTranslation } from 'react-i18next';
 
 export function ShippingMethodSelector({

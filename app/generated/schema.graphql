@@ -1972,7 +1972,10 @@ type Mutation {
   deleteCustomerAddress(id: ID!): Success!
 
   """
-  Authenticates the user using the native authentication strategy. This mutation is an alias for `authenticate({ native: { ... }})`
+  Authenticates the user using the native authentication strategy. This mutation is an alias for authenticate({ native: { ... }})
+  
+  The `rememberMe` option applies when using cookie-based sessions, and if `true` it will set the maxAge of the session cookie
+  to 1 year.
   """
   login(password: String!, rememberMe: Boolean, username: String!): NativeAuthenticationResult!
 

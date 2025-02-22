@@ -45,7 +45,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <button className="text-center flex-col items-center justify-center">
+        <button className="flex flex-col bg-opacity-90 shadow-none cursor-pointer justify-center rounded-full items-center py-2 text-sm transition-all duration-300 ease-out hover:opacity-70">
           <MenuIcon
             onClick={() => setIsOpen(!isOpen)}
           />

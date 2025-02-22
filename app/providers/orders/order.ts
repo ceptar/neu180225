@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { QueryOptions, sdk } from '../../graphqlWrapper';
-import { CreateAddressInput, CreateCustomerInput } from '~/app/generated/graphql';
+import { CreateAddressInput, CreateCustomerInput } from '~/generated/graphql';
 
 export function getActiveOrder(options: QueryOptions) {
   return sdk

@@ -2,6 +2,7 @@ import { Link, NavLink } from '@remix-run/react';
 import classNames from 'classnames';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { FadeIn } from '~/src/components/visual-effects';
+import LogoTwoLines from '~/app/components/svgs/LogoTwoLines';
 
 import styles from './footer.module.scss';
 
@@ -111,17 +112,21 @@ export const Footer = ({ className }: FooterProps) => {
                         </Link>
                     </li>
                 </ul>
+                <ul>
+                <li>
+                    <div className={styles.copyright}>
+                <Link to="/" className={styles.logo}>
+                    <LogoTwoLines />
+                </Link>
+                   
+
+                </div>
+                    </li>
+                </ul>
             </FadeIn>
             <FadeIn className={styles.bottomBar} duration={1.8}>
-                <Link to="/" className={styles.logo}>
-                    ReClaim
-                </Link>
-                <div className={styles.copyright}>
-                    <span>© 2035 by ReClaim. Made with </span>
-                    <Link to="https://www.codux.com/" className={styles.coduxLink}>
-                        Codux™
-                    </Link>
-                </div>
+            <span>© 2035 by DiscoBabes </span>
+
             </FadeIn>
         </footer>
     );

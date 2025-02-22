@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { QueryOptions, sdk } from '../../graphqlWrapper';
+import { QueryOptions, sdk } from '~/app/graphqlWrapper';
 import { PaymentInput } from '~/app/generated/graphql';
 
 export function getAvailableCountries(options: QueryOptions) {

@@ -1,7 +1,6 @@
-import { CreditCardIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import { CreditCard as CreditCardIcon, CircleX as XCircleIcon } from 'lucide-react';
 import { Form } from '@remix-run/react';
-import { EligiblePaymentMethodsQuery } from '~/generated/graphql';
-// import { useTranslation } from 'react-i18next';
+import { EligiblePaymentMethodsQuery } from '~/app/generated/graphql';
 
 export function DummyPayments({
   paymentMethod,
@@ -10,7 +9,6 @@ export function DummyPayments({
   paymentMethod: EligiblePaymentMethodsQuery['eligiblePaymentMethods'][number];
   paymentError?: string;
 }) {
-  // const { t } = useTranslation();
 
   return (
     <div className="flex flex-col items-center">

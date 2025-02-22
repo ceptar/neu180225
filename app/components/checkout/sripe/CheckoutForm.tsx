@@ -4,13 +4,11 @@ import {
   PaymentElement,
 } from '@stripe/react-stripe-js';
 import { FormEvent } from 'react';
-import { CreditCardIcon } from '@heroicons/react/24/solid';
-//   import { useTranslation } from 'react-i18next';
+import { CreditCard as CreditCardIcon } from 'lucide-react';
 
 export const CheckoutForm = ({ orderCode }: { orderCode: string }) => {
   const stripe = useStripe();
   const elements = useElements();
-  // const { t } = useTranslation();
 
   const handleSubmit = async (event: FormEvent) => {
     // We don't want to let default form submission happen here,

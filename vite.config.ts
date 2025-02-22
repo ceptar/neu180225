@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 import App from './app/root';
 
 export default defineConfig({
+    server: {
+        port: 3000
+    },
     plugins: [
         remix({
             future: {

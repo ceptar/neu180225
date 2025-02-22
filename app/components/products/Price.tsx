@@ -1,4 +1,4 @@
-import { CurrencyCode } from '~/generated/graphql';
+import { CurrencyCode } from '~/app/generated/graphql';
 import { ProductCardProps } from './ProductCard';
 
 export function Price({
