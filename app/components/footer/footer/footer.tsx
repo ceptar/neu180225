@@ -2,6 +2,7 @@ import { Link, NavLink } from '@remix-run/react';
 import classNames from 'classnames';
 import { CategoryLink } from '~/src/components/category-link/category-link';
 import { FadeIn } from '~/src/components/visual-effects';
+import { LastRow } from '~/app/components/last-row/last-row';
 import LogoTwoLines from '~/app/components/svgs/LogoTwoLines';
 
 import styles from './footer.module.scss';
@@ -115,17 +116,14 @@ export const Footer = ({ className }: FooterProps) => {
                 <ul>
                 <li>
                     <div className={styles.copyright}>
-                <Link to="/" className={styles.logo}>
-                    <LogoTwoLines />
-                </Link>
-                   
-
+               
                 </div>
                     </li>
                 </ul>
             </FadeIn>
             <FadeIn className={styles.bottomBar} duration={1.8}>
-            <span>© 2035 by DiscoBabes </span>
+                <LastRow />
+            <div className="w-full flex flex-row">© 2035 by DiscoBabes </div>
 
             </FadeIn>
         </footer>

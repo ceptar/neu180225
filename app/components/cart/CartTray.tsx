@@ -40,13 +40,14 @@ export default function CartTray({
     <Sheet open={open} onOpenChange={onClose}>
       <SheetTrigger asChild>
       </SheetTrigger>
-      <SheetContent className="left w-[100%] sm:w-[50%] xl:w-[30%]">
+      <SheetContent  className="w-[100%] sm:w-[50%] xl:w-[30%]">
         <SheetHeader>
           <SheetTitle></SheetTitle>
           <SheetDescription>
           </SheetDescription>
         </SheetHeader>
-        <div className="overflow-y-auto pt-5 px-4 py-8">
+
+        <div className="overflow-y-auto relative pt-20 py-8">
                       {activeOrder?.totalQuantity ? (
                         <CartContents
                           orderLines={activeOrder?.lines ?? []}
@@ -56,7 +57,7 @@ export default function CartTray({
                           adjustOrderLine={adjustOrderLine}
                         ></CartContents>
                       ) : (
-                        <div className="flex items-center justify-center h-48 text-xl text-gray-400">
+                        <div className="flex items-center justify-center h-48 text-xl text-gray-500">
                           Your cart is empty
                         </div>
                       )}
@@ -64,7 +65,7 @@ export default function CartTray({
 
 
                   {activeOrder?.totalQuantity && editable && (
-                    <div className="border-t-[2px] border-discogray py-6 px-4 sm:px-6">
+                    <div className="border-t-[1px] border-gray-500 py-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
                         <p>
@@ -83,7 +84,7 @@ export default function CartTray({
                         <Link
                           to="/checkout"
                           onClick={() => onClose(false)}
-                          className="uppercase tracking-wider text-sm flex justify-center items-center px-6 py-3 border border-transparent shadow-sm font-medium text-discogray bg-discoyellow-200 hover:bg-discoyellow-400"
+                          className="bg-[#954eff3b] uppercase tracking-wider text-sm flex justify-center items-center px-6 py-3 border border-gray-500 shadow-sm hover:opacity-70"
                         >
                           Checkout
                         </Link>

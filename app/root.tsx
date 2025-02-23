@@ -22,7 +22,7 @@ import { useActiveOrder } from './utils/use-active-order';
 import { getActiveCustomer } from './providers/customer/customer';
 // import { RouteBreadcrumbs } from '~/src/components/breadcrumbs/use-breadcrumbs';
 import CartTray from '~/app/components/cart/CartTray';
-import { Footer } from '~/src/components/footer/footer';
+import { Footer } from '~/app/components/footer/footer/footer';
 import { Header } from '~/app/components/header/header/header';
 // import { NavigationProgressBar } from '~/src/components/navigation-progress-bar/navigation-progress-bar';
 // import { Toaster } from '~/src/components/toaster/toaster';

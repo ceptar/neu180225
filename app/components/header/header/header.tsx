@@ -68,16 +68,16 @@ export const Header = ({ className, collections,onCartIconClick, cartQuantity, }
 
         <div className="flex-1 flex-col items-center justify-center">
         <button
-            className="flex flex-col  bg-opacity-90 shadow-none cursor-pointer justify-center rounded-full items-center py-2 text-sm transition-all duration-300 ease-out hover:opacity-70"
+            className="flex flex-col shadow-none cursor-pointer justify-center rounded-full items-center py-2 text-sm transition-all duration-300 ease-out hover:opacity-70"
             onClick={onCartIconClick}
             aria-label="Open cart tray"
           >
             <Cart
             />
             {cartQuantity ? (
-              <div className="w-5 h-5 z-40 absolute items-center font-bold justify-center rounded-full text-sm"
+              <div className="w-5 h-5 z-40 absolute items-center justify-center rounded-full"
               style={{
-                backgroundColor: "#ffff0078",
+                backgroundColor: "#954eff3b",
                 left: "18px",
                 top: "20px",
               }}>
